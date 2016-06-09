@@ -1,0 +1,7 @@
+{
+  "Timestamp": "2015-02-12T14:00:00", 
+  "Resource": "Fixture",
+  "Id": 147211,
+  "URI": "http://api.football-data.org/v1/fixtures/147211", 
+  "Updates": "Score|1:0 -> 1:1;STATUS|OLD_VALUE -> NEW_VALUE"
+}
