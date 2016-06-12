@@ -3,6 +3,11 @@ var app = express()
 var parser = require('body-parser')
 var PORT = process.env.API_PORT || 3000
 
+app.use(function (req, res, next) {
+  console.log('request:', req.method, req.path, req.body)
+  next()
+})
+
 app.use(parser.json())
 
 app.get('/', function (req, res) {
