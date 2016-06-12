@@ -1,9 +1,9 @@
 var request = require('request')
 var TEAMS = require('../fixtures/euroTeams')
 
-function formatFlag (flag) {
-  if (!flag) return ''
-  return ':flag-' + flag + ': '
+function formatFlag (countryCode) {
+  if (!countryCode) return ''
+  return ':flag-' + countryCode + ': '
 }
 
 module.exports = function updateSlack (fixture) {
