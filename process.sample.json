@@ -1,0 +1,12 @@
+{
+  "apps" : [{
+    "name"       : "eurobot",
+    "script"     : "index.js",
+    "env": {
+      "API_TOKEN": "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "API_PORT": 80,
+      "STRATEGY": "polling",
+      "SLACK_URL": "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    }
+  }]
+}

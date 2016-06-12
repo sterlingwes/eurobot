@@ -3,7 +3,7 @@ var request = require('request')
 var updateSlack = require('../channels/slack')
 
 module.exports = function (req, res) {
-  return res.sendStatus(200) // disable event notifications for now
+  res.sendStatus(200)
 
   var webhook = req.body
   var uri = webhook.URI
