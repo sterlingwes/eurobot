@@ -97,7 +97,7 @@ class Fixture {
           updateSlack(game)
           tweet(game)
         }
-      } catch (e) { console.error('Error parsing response for fixture', this.getLink(), e) }
+      } catch (e) { console.error('Error parsing response for fixture', this.getLink(), e.stack) }
     })
   }
 }

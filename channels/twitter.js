@@ -10,7 +10,7 @@ var emojiFlags = require('emoji-flags')
 function formatFlag (countryCode) {
   if (!countryCode) return ''
   countryCode = countryCode.toUpperCase()
-  var flag = emojiFlags.countryCode(flag)
+  var flag = emojiFlags.countryCode(countryCode)
   if (!flag) return ''
   return flag.emoji + ' '
 }
