@@ -27,6 +27,7 @@ The football-data.org API provides an [experimental webhook service](http://api.
 ### Deployment
 
 * Clone this repo and rename `process.sample.json` to `process.json`
+* `npm install`
 * Install PM2 node process manager: `npm install -g pm2`
 
 ### Runtime
