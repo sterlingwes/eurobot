@@ -30,6 +30,6 @@ module.exports = function updateSlack (fixture) {
     }
   }, function (err, response, body) {
     if (err) return console.error('Slack send error', err)
-    console.log('Sent', body)
+    console.log('Sent event to slack, response:', body)
   })
 }

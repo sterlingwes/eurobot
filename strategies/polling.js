@@ -1,70 +1,37 @@
 var _ = require('lodash')
 var request = require('request')
+var newFixture = require('./Fixture')
 
-var INTERVAL = (45 * 2 + 15 + 10) * 60000 // 2 halves, break, stoppage time allowance
+var API_HOST = process.env.STUB_API ? 'http://localhost:' + (process.env.API_PORT || 3000) : 'http://api.football-data.org'
+var SEASON = process.env.API_SEASON
 var TOKEN = {
   'X-Auth-Token': process.env.API_TOKEN
 }
-var GAMES
 
-var updateSlack = require('../channels/slack')
-var tweet = require('../channels/twitter')
-
-var results = {}
-
-function getCurrentGame () {
-  return _(GAMES).find(game => {
-    var interval = Date.now() - new Date(game.date).valueOf()
-    return interval < INTERVAL
-  })
-}
-
-function getScore (game) {
-  return [ game.result.goalsAwayTeam, game.result.goalsHomeTeam ]
-}
-
-function hasChanged (link, game) {
-  var last = getScore(results[link])
-  var current = getScore(game)
-  return (last[0] !== current[0]) ||
-        (last[1] !== current[1]) ||
-        (results[link].status !== game.status)
-}
-
-function poll () {
-  var currentGame = getCurrentGame()
-  if (!currentGame) return console.warn('No current game')
-
-  var fixtureLink = currentGame._links.self.href
-  console.log('polling', fixtureLink)
-
-  request({
-    uri: fixtureLink,
-    headers: TOKEN
-  }, function (err, res, body) {
-    if (err) return console.error(err)
-    var game = JSON.parse(body)
-    if (!results[fixtureLink]) {
-      results[fixtureLink] = game.fixture
-      console.log('initialized game', game.fixture.awayTeamName, 'vs.', game.fixture.homeTeamName)
-      return
-    }
-
-    if (hasChanged(fixtureLink, game.fixture)) {
-      console.log('changed!')
-      results[fixtureLink] = game.fixture
-      updateSlack(game.fixture)
-      tweet(game.fixture)
-    }
-  })
-}
+var fixtures = []
 
 request({
-  uri: 'http://api.football-data.org/v1/soccerseasons/424/fixtures',
+  uri: API_HOST + '/v1/soccerseasons/' + SEASON + '/fixtures',
   headers: TOKEN
 }, function (err, res, body) {
   if (err) return console.error(err)
-  GAMES = JSON.parse(body).fixtures
-  poll()
-  setInterval(poll, 60000)
+  var games = JSON.parse(body).fixtures
+
+  fixtures = _(games)
+    .map(game => newFixture(game))
+    .filter(game => {
+      return game.isActive() || game.isUpcoming()
+    })
+    .value()
+
+  if (!fixtures.length) return console.warn('WARNING: No games found!')
+
+  fixtures.forEach(game => {
+    var gameStartTime = game.getPollStartOffset()
+    var hoursFrom = Math.ceil((gameStartTime / 3.6e+6) * 10) / 10
+    console.log('+ ', game.getMatch(), ` starting ${hoursFrom} hours from now`)
+    setTimeout(() => { game.startPolling() }, gameStartTime)
+  })
+
+  newFixture.setCount(fixtures.length)
 })

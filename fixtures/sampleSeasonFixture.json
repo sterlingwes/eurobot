@@ -1,0 +1,18 @@
+{
+  "fixture": {
+      "_links": {
+          "self": {
+              "href": "http://api.football-data.org/v1/fixtures/149885"
+          }
+      },
+      "date": "2016-06-12T23:45:00Z",
+      "status": "IN_PLAY",
+      "matchday": 1,
+      "homeTeamName": "Albania",
+      "awayTeamName": "Switzerland",
+      "result": {
+        "goalsHomeTeam": 0,
+        "goalsAwayTeam": 0
+      }
+  }
+}
