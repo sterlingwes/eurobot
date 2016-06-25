@@ -20,6 +20,8 @@ All configuration is done via environment variables. The preferred method of con
 
 This is the recommended method. On start games for the target season will be fetched and the API will be polled every 15 seconds during game time (defined as 115 minutes from game start time). When there's no active game polling stops until the next game start.
 
+In the knockout stages, restart the app when new matches are determined (ie: between knockout stage rounds).
+
 #### Events
 
 The football-data.org API provides an [experimental webhook service](http://api.football-data.org/event_api) which can be configured with an account. As of writing, this strategy does not appear reliable.

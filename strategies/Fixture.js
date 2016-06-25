@@ -4,7 +4,7 @@ var request = require('request')
 var updateSlack = require('../channels/slack')
 var tweet = require('../channels/twitter')
 
-var ACTIVE_GAME_INTERVAL = (45 * 2 + 15 + 10) * 60000 // 2 halves, break, stoppage time allowance
+var ACTIVE_GAME_INTERVAL = (45 * 2 + 15 + 10 + 60) * 60000 // 2 halves, break, stoppage time allowance, extra time
 var POLL_INTERVAL = 15000
 var TOKEN = {
   'X-Auth-Token': process.env.API_TOKEN
