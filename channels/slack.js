@@ -9,11 +9,17 @@ function formatFlag (countryCode) {
 module.exports = function updateSlack (fixture) {
   var message = ''
   var score = fixture.result
+  var pks = { home: '', away: '' }
   var awayFlag = formatFlag(TEAMS[fixture.awayTeamName])
   var homeFlag = formatFlag(TEAMS[fixture.homeTeamName])
 
-  message += '*' + score.goalsAwayTeam + '* ' + awayFlag + fixture.awayTeamName + '\n'
-  message += '*' + score.goalsHomeTeam + '* ' + homeFlag + fixture.homeTeamName
+  if (score.penaltyShootout) {
+    pks.away = ` (${score.penaltyShootout.goalsAwayTeam})`
+    pks.home = ` (${score.penaltyShootout.goalsHomeTeam})`
+  }
+
+  message += '*' + score.goalsAwayTeam + pks.away + '* ' + awayFlag + fixture.awayTeamName + '\n'
+  message += '*' + score.goalsHomeTeam + pks.home + '* ' + homeFlag + fixture.homeTeamName
 
   request({
     uri: process.env.SLACK_URL,

@@ -35,11 +35,17 @@ module.exports = function (fixture) {
 
   var message = fixture.status === 'FINISHED' ? 'FINAL:\n' : ''
   var score = fixture.result
+  var pks = { home: '', away: '' }
   var awayFlag = formatFlag(TEAMS[fixture.awayTeamName])
   var homeFlag = formatFlag(TEAMS[fixture.homeTeamName])
 
-  message += score.goalsAwayTeam + ' ' + awayFlag + fixture.awayTeamName + '\n'
-  message += score.goalsHomeTeam + ' ' + homeFlag + fixture.homeTeamName
+  if (score.penaltyShootout) {
+    pks.away = ` (${score.penaltyShootout.goalsAwayTeam})`
+    pks.home = ` (${score.penaltyShootout.goalsHomeTeam})`
+  }
+
+  message += score.goalsAwayTeam + pks.away + ' ' + awayFlag + fixture.awayTeamName + '\n'
+  message += score.goalsHomeTeam + pks.home + ' ' + homeFlag + fixture.homeTeamName
   message += '\n#EURO2016'
 
   var params = { status: message }
